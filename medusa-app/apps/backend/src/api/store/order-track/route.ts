@@ -27,7 +27,8 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "shipping_address.address_1", "shipping_address.country_code",
       "shipping_methods.name",
     ],
-    filters: { display_id: displayId },
+        // display_id is a number in the database, but Medusa's generated filter type says string.
+    filters: { display_id: displayId } as any,
   })
 
   const order = data[0]
