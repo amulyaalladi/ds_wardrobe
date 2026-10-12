@@ -1,0 +1,10 @@
+node_modules/
+.next/
+dist/
+.medusa/
+.env
+.env.*
+!.env.example
+!.env.template
+*.log
+.DS_Store

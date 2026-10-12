@@ -1,0 +1,15 @@
+# Local infrastructure only (Postgres + Redis). Run the apps with npm.
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-medusa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-medusa_local_only}
+      POSTGRES_DB: ${POSTGRES_DB:-ds_wardrobe}
+    ports: ["5433:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+volumes:
+  pgdata:
