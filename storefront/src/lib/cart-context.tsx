@@ -44,8 +44,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (!id) { setCart(null); return }
     try {
       const { cart } = await sdk.store.cart.retrieve(id, { fields: CART_FIELDS })
-      if (cart.completed_at) clear()
-      else setCart(cart)
+      if (cart.completed_at) { clear(); return }
+      // A cart made before the India region existed (e.g. in EUR) can never check out to India.
+      // Drop it so the next add-to-cart starts a fresh INR cart.
+      if (cart.currency_code !== "inr") {
+        const { regions } = await sdk.store.region.list()
+        if (regions.some((r) => r.currency_code === "inr")) { clear(); return }
+      }
+      setCart(cart)
     } catch {
       clear() // stale/invalid cart id
     }
