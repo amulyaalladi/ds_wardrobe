@@ -1,6 +1,7 @@
 import { loadEnv, defineConfig } from "@medusajs/framework/utils"
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
+console.log("CORS config:", { store: process.env.STORE_CORS, auth: process.env.AUTH_CORS })
 
 // Production services switch on only when their env vars are set,
 // so local development keeps working exactly as before.
