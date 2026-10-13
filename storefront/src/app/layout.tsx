@@ -5,6 +5,7 @@ import Providers from "@/components/Providers"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { getCategories } from "@/lib/data"
+import { logApiError } from "@/lib/medusa"
 
 const display = Bodoni_Moda({ subsets: ["latin"], variable: "--font-display", display: "swap" })
 const body = Figtree({ subsets: ["latin"], variable: "--font-body", display: "swap" })
@@ -17,7 +18,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Navigation must never take the whole site down if the API is unreachable.
-  const categories = await getCategories().catch(() => [])
+  const categories = await getCategories().catch((e) => {
+    logApiError("navigation categories", e)
+    return []
+  })
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body>

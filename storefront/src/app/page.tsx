@@ -3,6 +3,7 @@ import Image from "next/image"
 import Hero from "@/components/Hero"
 import { categoryImages } from "@/lib/media"
 import { getProducts, getCollections, getCategories } from "@/lib/data"
+import { logApiError } from "@/lib/medusa"
 import { ProductGrid } from "@/components/ProductCard"
 import { Button, EmptyState, ErrorState } from "@/components/ui"
 import { site, whatsappLink } from "@/lib/site"
@@ -18,7 +19,8 @@ export default async function Home() {
       getCollections(),
       getCategories(),
     ])
-  } catch {
+  } catch (e) {
+    logApiError("home page", e)
     return <ErrorState title="The store is taking a break" text="We couldn't reach the catalogue. Please refresh in a moment." />
   }
 

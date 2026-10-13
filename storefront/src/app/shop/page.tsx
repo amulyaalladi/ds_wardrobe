@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { logApiError } from "@/lib/medusa"
 import type { Metadata } from "next"
 import { PAGE_SIZE, getCategories, getCollections, getProducts, type ShopQuery } from "@/lib/data"
 import { optionValues } from "@/lib/product"
@@ -40,7 +41,8 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
       sizes: [...new Set(base.all.flatMap((p) => optionValues(p, "Size")))],
       colors: [...new Set(base.all.flatMap((p) => optionValues(p, "Color")))],
     }
-  } catch {
+  } catch (e) {
+    logApiError("shop page", e)
     return <ErrorState title="We couldn't load the shop" text="The catalogue is unreachable right now." />
   }
 
